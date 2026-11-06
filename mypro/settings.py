@@ -49,7 +49,10 @@ if not SECRET_KEY:
 
 ALLOWED_HOSTS = [
     host.strip()
-    for host in os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',')
+    for host in os.environ.get(
+    'DJANGO_ALLOWED_HOSTS',
+    'localhost,127.0.0.1,testserver,modern-architecture-studio-6q75kcyl9-eraj21504-2042s-projects.vercel.app'
+).split(',')
     if host.strip()
 ]
 
