@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Admin Dashboard - ARCHITEX</title>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        :root {
+            --bg: #faf8f3;
+            --surface: #ffffff;
+            --surface-2: #f8f3e6;
+            --line: #eadfc4;
+            --text: #2b2418;
+            --muted: #8a7d63;
+            --accent: #b8892b; 
+            --accent-soft: #f7edd0;
+            --ok: #3f8a5a; 
+            --ok-soft: #e1f2e7;
+            --bad: #b5503c;
+            --bad-soft: #fae6e0;
+            --shadow: 0 1px 2px rgba(120,90,20,.06), 0 8px 24px rgba(120,90,20,.07);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg); 
+            color: var(--text);
+            min-height: 100vh; 
+            line-height: 1.5;
+         }
+
+        header { 
+            position: sticky;
+            top: 0; 
+            z-index: 20;
+            display: flex; 
+            flex-wrap: wrap;
+            align-items: center; 
+            justify-content: space-between; 
+            gap: 10px;
+            padding: 12px 4%;
+            padding-top: calc(12px + env(safe-area-inset-top, 0px));
+            background: color-mix(in srgb, var(--surface) 85%, transparent);
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--accent); 
+        }
+        header h1 { 
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 1.5px; 
+            color: var(--accent);
+        }
+        header div {
+            display: flex;
+            flex-wrap: wrap; 
+            align-items: center; 
+            gap: 8px;
+        }
+        header .who {
+            font-size: .85rem;
+            color: var(--muted); 
+            padding: 5px 12px;
+            background: var(--surface-2); 
+            border: 1px solid var(--line); 
+            border-radius: 999px;
+        }
+        header a {
+            color: var(--text); 
+            text-decoration: none;
+            border: 1px solid var(--line);
+            background: var(--surface); 
+            padding: 6px 13px; 
+            border-radius: 8px; 
+            font-size: .85rem;
+            transition: border-color .15s, background .15s;
+        }
+        header a:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        main { padding: 24px 4% 48px; max-width: 1240px; margin: 0 auto; }
+
+
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+        .stat {
+            background: var(--surface);
+            border: 1px solid var(--line); 
+            border-radius: 14px; 
+            padding: 18px; 
+            box-shadow: var(--shadow);
+            border-top: 3px solid var(--accent);
+        }
+        .stat b { 
+            display: block;
+            font-size: 1.9rem;
+            line-height: 1.15;
+            letter-spacing: -.5px;
+            font-variant-numeric: tabular-nums;
+        }
+        .stat span { font-size: .82rem; color: var(--muted); }
+        .stat.ok { border-top-color: var(--ok); } .stat.ok b { color: var(--ok); }
+        .stat.bad { border-top-color: var(--bad); } .stat.bad b { color: var(--bad); }
+
+        section { 
+            background: var(--surface);
+            border: 1px solid var(--line); 
+            border-radius: 14px; 
+            padding: 20px 0 0; 
+            margin-bottom: 24px; 
+            box-shadow: var(--shadow); 
+            overflow: hidden;
+        }
+        section h2 { 
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 0 20px;
+            margin-bottom: 4px; 
+        }
+        section p.hint {
+            font-size: .84rem;
+            color: var(--muted); 
+            padding: 0 20px; 
+            margin-bottom: 14px; 
+        }
+        section > p.empty { padding: 0 20px 22px; }
+
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table {
+             width: 100%;
+            border-collapse: collapse; 
+            font-size: .88rem; 
+            min-width: 600px;
+        }
+        th, td { 
+            text-align: left;
+            padding: 12px 20px;
+            border-top: 1px solid var(--line);
+            vertical-align: top; 
+        }
+        th {
+            background: var(--surface-2);
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--muted); 
+            white-space: nowrap; 
+        }
+        tbody tr:hover { background: var(--surface-2); }
+        td.nowrap { white-space: nowrap; color: var(--muted); }
+
+        .badge { 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 2px 10px;
+            border-radius: 999px; 
+            font-size: .75rem; 
+            font-weight: 600; 
+        }
+        .badge.sent::before, .badge.failed::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor; 
+        }
+        .badge.sent { background: var(--ok-soft); color: var(--ok); }
+        .badge.failed { background: var(--bad-soft); color: var(--bad); }
+        .badge.kind { background: var(--accent-soft); color: var(--accent); }
+        .err { 
+            color: var(--bad);
+            font-size: .78rem;
+            margin-top: 4px;
+            word-break: break-word;
+            max-width: 320px;
+             }
+        .empty { color: var(--muted); font-size: .9rem; padding: 10px 0; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ARCHITEX &middot; ADMIN DASHBOARD</h1>
+        <div>
+            <span class="who">{{ user.email }}</span>
+            <a href="{% url 'home.html' %}">View site</a>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </header>
+    <main>
+        {% if setup_error %}
+        <section><h2 style="color:var(--bad);">Setup needed</h2><p class="hint">{{ setup_error }}</p></section>
+        {% endif %}
+        <div class="stats">
+            <div class="stat"><b>{{ visitor_count }}</b><span>Visitors logged in</span></div>
+            <div class="stat"><b>{{ emails_total }}</b><span>Emails tried</span></div>
+            <div class="stat ok"><b>{{ emails_sent }}</b><span>Emails sent</span></div>
+            <div class="stat bad"><b>{{ emails_failed }}</b><span>Emails failed</span></div>
+            <div class="stat"><b>{{ subscriber_count }}</b><span>Subscribers</span></div>
+            <div class="stat"><b>{{ inquiry_count }}</b><span>Contact inquiries</span></div>
+        </div>
+
+        <section>
+            <h2>Email activity</h2>
+            <p class="hint">Every email sent from the home page "Email Message" form and the footer "Subscribe" button: who received it, who used the form, and whether it was delivered.</p>
+            {% if email_logs %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>#</th><th>Sent to</th><th>Form</th><th>Used by (logged in as)</th><th>Status</th><th>Date &amp; time</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for log in email_logs %}
+                        <tr>
+                            <td>{{ log.id }}</td>
+                            <td>{{ log.recipient }}</td>
+                            <td><span class="badge kind">{{ log.get_kind_display }}</span></td>
+                            <td>{% if log.sent_by %}{{ log.sent_by.email|default:log.sent_by.username }}{% else %}&mdash;{% endif %}</td>
+                            <td>
+                                <span class="badge {{ log.status }}">{{ log.status|title }}</span>
+                                {% if log.error %}<div class="err">{{ log.error }}</div>{% endif %}
+                            </td>
+                            <td class="nowrap">{{ log.created_at|date:"d M Y, h:i A" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty">No emails have been sent yet.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Who used the website</h2>
+            <p class="hint">Everyone who signed in on the login page (admin accounts are not listed).</p>
+            {% if visitors %}
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr><th>Email</th><th>First login</th><th>Last login</th><th>Emails sent from this user</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for v in visitors %}
+                        <tr>
+                            <td>{{ v.email|default:v.username }}</td>
+                            <td class="nowrap">{{ v.date_joined|date:"d M Y, h:i A" }}</td>
+                            <td class="nowrap">{% if v.last_login %}{{ v.last_login|date:"d M Y, h:i A" }}{% else %}&mdash;{% endif %}</td>
+                            <td>{{ v.emails_sent }} sent / {{ v.emails_total }} tried</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty">Nobody has logged in yet.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Subscribers</h2>
+            <p class="hint">Emails saved from the footer "Subscribe Now" button.</p>
+            {% if subscribers %}
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Email</th><th>Subscribed on</th></tr></thead>
+                    <tbody>
+                        {% for s in subscribers %}
+                        <tr><td>{{ s.id }}</td><td>{{ s.email }}</td><td class="nowrap">{{ s.created_at|date:"d M Y, h:i A" }}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty">No subscribers yet.</p>
+            {% endif %}
+        </section>
+
+        <section>
+            <h2>Contact inquiries</h2>
+            <p class="hint">Messages sent from the Contact page.</p>
+            {% if inquiries %}
+            <div class="table-wrap">
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Message</th><th>Date &amp; time</th></tr></thead>
+                    <tbody>
+                        {% for q in inquiries %}
+                        <tr>
+                            <td>{{ q.id }}</td>
+                            <td>{{ q.name }} {{ q.lastname }}</td>
+                            <td>{{ q.email }}</td>
+                            <td>{{ q.message|truncatechars:160 }}</td>
+                            <td class="nowrap">{% if q.created_at %}{{ q.created_at|date:"d M Y, h:i A" }}{% else %}&mdash;{% endif %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="empty">No inquiries yet.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+
+</html>

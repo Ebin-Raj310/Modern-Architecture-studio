@@ -1,0 +1,80 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Login - Modern Architecture Studio</title>
+    {% load static %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+</head>
+
+<body>
+    <div class="video-bg-wrapper" id="videoWrapper">
+        <video id="bgVideo" autoplay muted loop playsinline>
+            <source src="{% static 'images/video2.mp4' %}" type="video/mp4">
+            Your browser does not support HTML5 video.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+    <div class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <h1>Modern Architecture Studio</h1>
+                <p>Welcome back! Please sign in to continue.</p>
+            </div>
+            {% if error %}
+            <div class="server-error" id="serverError">
+                <i class="fa fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+            <form id="loginForm" action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.GET.next|default:'' }}">
+                <div class="input-group">
+                    <label for="username">Email</label>
+                    <input type="email" id="username" name="username" placeholder="you@example.com"
+                        autocomplete="email" required>
+                    <small class="error" id="usernameError"></small>
+                </div>
+                <div class="input-group">
+                    <div class="label-row">
+                        <label for="password">Password</label>
+                        <a href="#" class="forgot-link" id="forgotPassword">Forgot?</a>
+                    </div>
+                    <div class="password-box">
+                        <input type="password" id="password" name="password" placeholder="Enter your password"
+                            autocomplete="current-password" minlength="8" required>
+                        <button type="button" class="toggle-password" id="togglePassword">Show</button>
+                    </div>
+                    <small class="error" id="passwordError"></small>
+                </div>
+                <div class="login-options">
+                    <label class="remember">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+                <p class="login-message" id="loginMessage"></p>
+
+                <div class="signup-row">
+                    <span>Don't have an account?</span>
+                    <a href="#">Create one</a>
+                </div>
+                <div class="back-home">
+                    <a href="{% url 'home.html' %}"><i class="fa fa-arrow-left"></i> Back to Modern Architex</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'js/script2.js' %}"></script>
+</body>
+
+</html>
