@@ -48,11 +48,11 @@ if not SECRET_KEY:
     SECRET_KEY = 'local-development-only-change-this-key-7h2Kp9vL4xQ8mN3cR6wF1zB5aY0dT8uE'
 
 ALLOWED_HOSTS = [
-    host.strip()
+     host.strip()
     for host in os.environ.get(
-    'DJANGO_ALLOWED_HOSTS',
-    'localhost,127.0.0.1,testserver,modern-architecture-studio-6q75kcyl9-eraj21504-2042s-projects.vercel.app'
-).split(',')
+        'DJANGO_ALLOWED_HOSTS',
+        'localhost,127.0.0.1,testserver,.vercel.app'
+    ).split(',')
     if host.strip()
 ]
 
