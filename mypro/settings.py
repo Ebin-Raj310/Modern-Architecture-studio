@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+
 # --- tiny .env loader (no extra package needed) ---------------------------
 # Put EMAIL_HOST_USER / EMAIL_HOST_PASSWORD in a file named ".env" next to manage.py
 # (".env.txt" is also accepted, because Windows Notepad likes to add ".txt").
@@ -31,7 +33,7 @@ for _name in ('.env', '.env.txt'):
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+load_dotenv(BASE_DIR / '.env')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
@@ -111,16 +113,22 @@ WSGI_APPLICATION = 'mypro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_NAME', 'modern'),
-        'USER': os.environ.get('DB_USER', 'root'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'root'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '3306'),
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('DB_NAME', 'modern'),
+            'USER': os.environ.get('DB_USER', 'avnadmin'),
+           'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'modern-architecture-db-eraj21504-2340.c.aivencloud.com'),
+            'PORT': os.environ.get('DB_PORT', '10767'),
+            'OPTIONS': {
+                'ssl': {
+                    'ca': str(BASE_DIR / 'ca.pem'),
+                },
+            },
+        }
     }
-}
 
 
 # Password validation
