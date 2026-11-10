@@ -17,8 +17,6 @@ class LoginForm(forms.Form):
             'placeholder': 'Enter your password'
         })
     )
-
-# Backward-compatible alias
 loginForm = LoginForm
 
 class ArtForm(forms.ModelForm):

@@ -50,7 +50,7 @@ class EmailLog(models.Model):
     recipient = models.EmailField()
     kind = models.CharField(max_length=20, choices=KIND_CHOICES)
     subject = models.CharField(max_length=255, blank=True)
-    status = models.CharField(max_length=10, default='sent')  # sent / failed
+    status = models.CharField(max_length=10, default='sent')
     error = models.TextField(blank=True)
     sent_by = models.ForeignKey(
         'auth.User', null=True, blank=True, on_delete=models.SET_NULL, related_name='email_logs'
