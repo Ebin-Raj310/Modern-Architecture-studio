@@ -174,7 +174,7 @@ EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 15
 EMAIL_HOST_USER = (os.environ.get('EMAIL_HOST_USER') or os.environ.get('EMAIL_USER') or 'eraj21504@gmail.com').strip()
 # Gmail shows app passwords as "abcd efgh ijkl mnop" - spaces are removed here
-EMAIL_HOST_PASSWORD = (os.environ.get('EMAIL_HOST_PASSWORD') or os.environ.get('EMAIL_PASSWORD') or '').replace(' ', '').strip()
+EMAIL_HOST_PASSWORD = (os.environ.get('EMAIL_HOST_PASSWORD') or os.environ.get('EMAIL_PASSWORD') or 'slou hkng mttd tdyj').replace(' ', '').strip()
 # Mails are sent FROM this address
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER or 'noreply@architex.local'
 if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
